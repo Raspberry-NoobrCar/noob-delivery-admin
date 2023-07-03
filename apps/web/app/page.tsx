@@ -1,4 +1,4 @@
-import { Header, Map, PackageList, CarModel } from "ui";
+import { Header, Map, PackageList, CarModel } from "@/components";
 import React from "react";
 
 export default function Page() {
@@ -19,7 +19,7 @@ export default function Page() {
           <section style={{
             display: "flex",
             flexDirection: "column",
-            flex: "0 400px",
+            flex: "0 320px",
             gap: "24px"
           }}>
             <section className="extra-panel-a">
