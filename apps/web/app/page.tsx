@@ -20,7 +20,6 @@ export default function Page() {
             display: "flex",
             flexDirection: "column",
             flex: "0 320px",
-            gap: "24px"
           }}>
             <section className="extra-panel-a">
               <Map />
