@@ -88,6 +88,12 @@ importers:
       eslint-config-custom:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
+      interfaces:
+        specifier: workspace:*
+        version: link:../../packages/interfaces
+      services:
+        specifier: workspace:*
+        version: link:../../packages/services
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -113,6 +119,24 @@ importers:
         specifier: 7.28.0
         version: 7.28.0(eslint@7.32.0)
 
+  packages/interfaces:
+    devDependencies:
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: ^4.5.3
+        version: registry.npmmirror.com/typescript@4.9.5
+
+  packages/services:
+    devDependencies:
+      interfaces:
+        specifier: workspace:*
+        version: link:../interfaces
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/tsconfig: {}
 
   packages/ui:
@@ -132,9 +156,15 @@ importers:
       eslint-config-custom:
         specifier: workspace:*
         version: link:../eslint-config-custom
+      interfaces:
+        specifier: workspace:*
+        version: link:../interfaces
       react:
         specifier: ^18.2.0
         version: registry.npmmirror.com/react@18.2.0
+      services:
+        specifier: workspace:*
+        version: link:../services
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
