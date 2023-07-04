@@ -1,5 +1,6 @@
 import PackageLayer from "./PackageLayer";
 import ShelfLayer from "./ShelfLayer";
+import StatusMonitor from "./StatusMonitor";
 
 const CarModel = () => {
   const takeOnce = 4;
@@ -23,6 +24,7 @@ const CarModel = () => {
           <PackageLayer take={takeOnce} />
         </div>
       </div>
+      <StatusMonitor />
     </div>
   )
 }
