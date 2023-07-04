@@ -2,17 +2,15 @@
 
 import { Table, Tag } from "antd";
 import { ColumnType } from "antd/es/table";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Package } from "@/interfaces";
-import { PackageService } from "@/services";
+import usePackage from "@/hooks/usePackage";
 
 const PackageList = () => {
-  const [packages, setPackages] = useState<Package[]>([]);
+  const { loading, packagesInList, fetch: fetchPackages } = usePackage();
 
   useEffect(() => {
-    PackageService.getList().then(data => {
-      setPackages(data.data.list.map(item => ({ ...item, status: "waiting" })));
-    })
+    fetchPackages();
   }, []);
 
   const columns: ColumnType<Package>[] = [
@@ -35,11 +33,12 @@ const PackageList = () => {
         size="small"
         columns={columns}
         title={() => <strong>库存清单</strong>}
-        dataSource={packages}
+        dataSource={packagesInList}
         pagination={{
           pageSize: 10
         }}
         rowKey="uid"
+        loading={loading}
       />
     </div>
   )

@@ -6,7 +6,8 @@
     "paths": {
       "@/components": ["app/_components"],
       "@/services": ["app/_services"],
-      "@/interfaces": ["app/_interfaces"]
+      "@/interfaces": ["app/_interfaces"],
+      "@/hooks/*": ["app/_hooks/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/_services/fetcher.ts"],
