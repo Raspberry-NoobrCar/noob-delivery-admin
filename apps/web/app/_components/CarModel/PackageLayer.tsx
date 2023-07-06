@@ -1,7 +1,8 @@
 "use client"
 
 import usePackage from "@/hooks/usePackage";
-import { CSSProperties } from "react";
+import SocketContext from "@/hooks/useSocketContext";
+import { CSSProperties, useContext, useEffect } from "react";
 
 interface IProps {
   take: number;
@@ -18,7 +19,28 @@ const PackageCustomStyles: CSSProperties[] = [
 
 const PackageLayer = (props: IProps) => {
   const { take } = props;
-  const { packagesInCar } = usePackage();
+  const packageStore = usePackage();
+  const { ws } = useContext(SocketContext);
+
+  const handleLoadGood = (uid: string) => {
+    console.log("load good");
+    packageStore.loadPackage(uid);
+  }
+
+  const handleUnloadGood = (uid: string) => {
+    console.log("unload good");
+    packageStore.unLoadPackage(uid);
+  }
+
+  useEffect(() => {
+    if (!ws) return;
+    ws.on("loadGood", (uid: string) => {
+      handleLoadGood(uid);
+    })
+    ws.on("unloadGood", (uid: string) => {
+      handleUnloadGood(uid)
+    })
+  }, [ws]);
 
   return (
     <div
@@ -33,7 +55,7 @@ const PackageLayer = (props: IProps) => {
         left: 0
       }}
     >
-      { packagesInCar.map((item, index) => {
+      { packageStore.packagesInCar.map((item, index) => {
         return (
           <div 
             className="package-wrapper"
