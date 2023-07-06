@@ -1,21 +1,18 @@
 "use client"
 
-import useSocket from "@/hooks/useSocket";
-import { Badge } from "antd";
-import { useEffect } from "react";
+import { Badge, BadgeProps } from "antd";
+import useSocketStatus, { SocketStatus } from "@/hooks/useSocketStatus";
+
+const StatusBadgeMap: 
+  { [key in SocketStatus]: { state: BadgeProps["status"], text: string }} 
+= {
+  connected: { state: "success", text: "在线" },
+  reconnecting: { state: "warning", text: "重连中" },
+  disconnect: { state: "error", text: "离线" }
+}
 
 const StatusMonitor = () => {
-  const { subscribe, alive, init } = useSocket();
-
-  useEffect(() => {
-    init("ws://localhost:8080/api/noob");
-    subscribe("/monitor", {
-      type: "onclose",
-      callback: () => {
-        console.log("close");
-      }
-    })
-  }, []);
+  const { status } = useSocketStatus();
 
   return (
     <div
@@ -34,8 +31,11 @@ const StatusMonitor = () => {
           justifyContent: "flex-end"
         }}
       >
-        <div className="alive">
-          <Badge status={alive ? "success" : "error"} text={ alive ? "在线" : "离线" } />
+        <div className="status">
+          <Badge
+            status={StatusBadgeMap[status].state}
+            text={StatusBadgeMap[status].text}
+          />
         </div>
       </div>
     </div>

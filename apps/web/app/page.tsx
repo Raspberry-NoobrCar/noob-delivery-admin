@@ -1,9 +1,19 @@
+"use client"
+
 import { Header, Map, PackageList, CarModel } from "@/components";
-import React from "react";
+import { Socket, io } from "socket.io-client";
+import { useEffect, useState } from "react";
+import SocketContext from "@/hooks/useSocketContext"
 
 export default function Page() {
+  const [ws, setWS] = useState<Socket>()
+
+  useEffect(() => {
+    setWS(io("http://127.0.0.1:5000", { reconnectionAttempts: 10 }));
+  }, [])
+
   return (
-    <>
+    <SocketContext.Provider value={{ ws, setWS }}>
       <Header />
       <main>
         <section style={{
@@ -30,6 +40,6 @@ export default function Page() {
           </section>
         </section>
       </main>
-    </>
+    </SocketContext.Provider>
   );
 }
