@@ -6,6 +6,7 @@ import CoordinateLayer from "./CoordinateLayer";
 import NpcLayer from "./NpcLayer";
 import RouteLayer from "./RouteLayer";
 import SocketContext from "@/hooks/useSocketContext";
+import createUid from "@/_utils/createUid";
 
 const npcData: Npc[] = [
   { uid: "n01", name: "l01", role: "client", xy: [0, 3] },
@@ -26,19 +27,60 @@ const Map = () => {
   const size = 6;
   const [npcs, setNpcs] = useState<Npc[]>(npcData);
   const [barriers, setBarriers] = useState<Npc[]>([]);
-  const [routeLine, setRouteLine] = useState<Coordinate[]>(routeData);
+  const [routeLine, setRouteLine] = useState<Coordinate[]>([]);
+  const [trafficSigns, setTrafficSigns] = useState<Npc[]>([]);
+  const [car, setCar] = useState<Npc>();
   const { ws } = useContext(SocketContext);
 
   useEffect(() => {
+    setCar({ uid: "nc01", name: "c01", xy: [0, 0], role: "car" });
+  }, [])
+
+  useEffect(() => {
     if (!ws) return;
-    ws.on("setPath", (routeLine: Coordinate[]) => {
+    const handleSetPath = (routeLine: Coordinate[]) => {
       console.log("setPath", routeLine);
       setRouteLine(routeLine);
-    })
-    ws.on("setBarrier", (barrierXY: Coordinate) => {
-      console.log("setBarrier", barrierXY);
-      setBarriers([...barriers, { uid: useId(), name: "barrier", role: "barrier", xy: barrierXY}]);
-    })
+    }
+    ws.on("setPath", handleSetPath);
+
+    const handleSetBarrier = (data: { xy: Coordinate }) => {
+      const newBarrier: Npc = { uid: createUid(), name: "barrier", role: "barrier", xy: data.xy };
+      console.log("setBarrier", newBarrier);
+      setBarriers(state => [...state, newBarrier]);
+    }
+    ws.on("setBarrier", handleSetBarrier);
+
+    const handleMove = (data: { action: string, xy: Coordinate }) => {
+      console.log("handleMove", data);
+      setCar({ ...car, xy: data.xy });
+      setRouteLine(state => {
+        state.shift();
+        return [...state];
+      })
+    }
+    ws.on("handleMove", handleMove);
+
+    const handleSetTrafficSign = (data: { type: string, xy: Coordinate }) => {
+      console.log("setTrafficSign", data);
+      setTrafficSigns(state =>
+        [ ...state, {
+            uid: createUid(),
+            name: data.type,
+            role: "traffic_sign",
+            xy: data.xy 
+          }
+        ]
+      );
+    }
+    ws.on("setTrafficSign", handleSetTrafficSign);
+
+    return () => {
+      ws.off("setPath", handleSetPath);
+      ws.off("setBarrier", handleSetBarrier);
+      ws.off("handleMove", handleMove);
+      ws.off("setTrafficSign", handleSetTrafficSign);
+    }
   }, [ws]);
 
   return (
@@ -52,7 +94,7 @@ const Map = () => {
     >
       <div className="map-body" style={{ position: "relative", height: "100%" }}>
         <CoordinateLayer size={size} />
-        <NpcLayer size={size} npcs={npcs} barriers={barriers} />
+        <NpcLayer size={size} trafficSigns={trafficSigns} npcs={npcs} barriers={barriers} car={car} />
         <RouteLayer routeLine={routeLine} size={size} />
       </div>
     </div>

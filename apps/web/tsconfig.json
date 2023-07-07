@@ -7,7 +7,8 @@
       "@/components": ["app/_components"],
       "@/services": ["app/_services"],
       "@/interfaces": ["app/_interfaces"],
-      "@/hooks/*": ["app/_hooks/*"]
+      "@/hooks/*": ["app/_hooks/*"],
+      "@/_utils/*": ["app/_utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/_services/fetcher.ts"],
