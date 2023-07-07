@@ -20,8 +20,9 @@ const CarModel = () => {
         }}
       >
         <div className="wrapper" style={{position: "relative"}}>
-          <ShelfLayer />
-          <PackageLayer take={takeOnce} />
+          <ShelfLayer>
+            <PackageLayer take={takeOnce} />
+          </ShelfLayer>
         </div>
       </div>
       <StatusMonitor />
