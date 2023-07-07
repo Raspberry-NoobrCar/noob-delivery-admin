@@ -22,7 +22,7 @@ const PackageList = () => {
     { title: "状态", dataIndex: "status", render: (text) => {
       if (text === "waiting") return <Tag color="default">等待配送</Tag>;
       else if (text === "delivering") return <Tag color="blue">配送中</Tag>;
-      else if (text === "finished") return <Tag color="blue">完成配送</Tag>;
+      else if (text === "finished") return <Tag color="green">完成配送</Tag>;
     }},
   ]
 

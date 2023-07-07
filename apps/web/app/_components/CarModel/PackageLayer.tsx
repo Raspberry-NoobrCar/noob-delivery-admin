@@ -9,12 +9,10 @@ interface IProps {
 }
 
 const PackageCustomStyles: CSSProperties[] = [
-  { flex: "0 20%", height: "64px" },
-  { flex: "0 40%", height: "64px" },
-  { flex: "0 40%", height: "64px" },
-  { flex: "0 40%", height: "64px" },
-  { flex: "0 40%", height: "64px" },
-  { flex: "0 20%", height: "64px" },
+  { flex: "0 33%", height: "48px" },
+  { flex: "0 66%", height: "48px" },
+  { flex: "0 66%", height: "48px" },
+  { flex: "0 33%", height: "48px" },
 ]
 
 const PackageLayer = (props: IProps) => {
